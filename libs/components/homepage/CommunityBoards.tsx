@@ -24,29 +24,32 @@ const CommunityBoards = () => {
 		loading: getNewsArticlesLoading,
 		data: getNewsArticlesData,
 		error: getNewsArticlesError,
-		refetch: getNewsArticlesRefetch,
-	} = useQuery(GET_BOARD_ARTICLES, {
-		fetchPolicy: 'network-only',
-		variables: { input: { ...searchCommunity, limit: 6, search: { articleCategory: BoardArticleCategory.NEWS } } },
+        refetch: getNewsArticlesRefetch,
+	 } = useQuery(GET_BOARD_ARTICLES, {
+		fetchPolicy: "network-only",
+		variables:{input: { ...searchCommunity, limit: 6, search: {articleCategory: BoardArticleCategory.NEWS}} },
 		notifyOnNetworkStatusChange: true,
-		onCompleted: (data: T) => {
+		onCompleted:( data: T) => {
 			setNewsArticles(data?.getBoardArticles?.list);
 		},
-	});
+	 });
+       
+	 /** FREE **/
 
-	const {
+	 const {
 		loading: getFreeArticlesLoading,
 		data: getFreeArticlesData,
 		error: getFreeArticlesError,
-		refetch: getFreeArticlesRefetch,
-	} = useQuery(GET_BOARD_ARTICLES, {
-		fetchPolicy: 'network-only',
-		variables: { input: { ...searchCommunity, limit: 3, search: { articleCategory: BoardArticleCategory.FREE } } },
+        refetch: getFreeArticlesRefetch,
+	 } = useQuery(GET_BOARD_ARTICLES, {
+		fetchPolicy: "network-only",
+		variables:{input: { ...searchCommunity, limit: 3, search: {articleCategory: BoardArticleCategory.FREE} }},
 		notifyOnNetworkStatusChange: true,
-		onCompleted: (data: T) => {
+		onCompleted:( data: T) => {
 			setFreeArticles(data?.getBoardArticles?.list);
 		},
-	});
+	 });
+
 
 	if (device === 'mobile') {
 		return <div>COMMUNITY BOARDS (MOBILE)</div>;

@@ -24,19 +24,18 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 
 	/** APOLLO REQUESTS **/
 	const {
-		loading: getPropertiesLoading,
-		data: getPropertiesData,
-		error: getPropertisError,
-		refetch: getPropertisRefetch,
-	} = useQuery(GET_PROPERTIES, {
-		fetchPolicy: 'cache-and-network',
-		variables: { input: initialInput },
+		loading: getPopularPropertiesLoading,
+		data: getPopularPropertiesData,
+		error: getPopularPropertiesError,
+        refetch: getPopularPropertiesRefetch,
+	 } = useQuery(GET_PROPERTIES, {
+		fetchPolicy: "cache-and-network",
+		variables:{input: initialInput},
 		notifyOnNetworkStatusChange: true,
-		onCompleted: (data: T) => {
+		onCompleted:( data: T) => {
 			setPopularProperties(data?.getProperties?.list);
 		},
-	});
-
+	 });
 	/** HANDLERS **/
 
 	if (!popularProperties) return null;
