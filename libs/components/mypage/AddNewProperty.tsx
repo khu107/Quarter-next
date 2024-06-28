@@ -24,9 +24,9 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
-     const [createProperty] = useMutation(CREATE_PROPERTY);
-	 const [updateProperty] = useMutation(UPDATE_PROPERTY);
-    
+	const [createProperty] = useMutation(CREATE_PROPERTY);
+	const [updateProperty] = useMutation(UPDATE_PROPERTY);
+
 	const {
 		loading: getPropertyLoading,
 		data: getPropertyData,
@@ -34,10 +34,9 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 		refetch: getPropertyRefetch,
 	} = useQuery(GET_PROPERTY, {
 		fetchPolicy: 'network-only',
-		variables: { 
-			input: router.query.propertyId 
+		variables: {
+			input: router.query.propertyId,
 		},
-		
 	});
 
 	/** LIFECYCLES **/
@@ -146,32 +145,31 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 				},
 			});
 		} catch (err: any) {
-			sweetErrorHandling(err).then()
+			sweetErrorHandling(err).then();
 		}
 	}, [insertPropertyData]);
 
-     const updatePropertyHandler = useCallback(async () => {
-      try {
-		//@ts-ignore
-		insertPropertyData._id = getPropertyData?.getProperty?._id;
-		const result = await updateProperty({
-			variables: {
-				input: insertPropertyData,
-			},
-		});
+	const updatePropertyHandler = useCallback(async () => {
+		try {
+			//@ts-ignore
+			insertPropertyData._id = getPropertyData?.getProperty?._id;
+			const result = await updateProperty({
+				variables: {
+					input: insertPropertyData,
+				},
+			});
 
-		await sweetMixinSuccessAlert('This property has been updated successfully.');
-		await router.push({
-			pathname: '/mypage',
-			query: {
-				category: 'myProperties',
-			},
-		});
-	} catch (err: any) {
-		sweetErrorHandling(err).then()
-	}
-
-	 }, [insertPropertyData]);
+			await sweetMixinSuccessAlert('This property has been updated successfully.');
+			await router.push({
+				pathname: '/mypage',
+				query: {
+					category: 'myProperties',
+				},
+			});
+		} catch (err: any) {
+			sweetErrorHandling(err).then();
+		}
+	}, [insertPropertyData]);
 
 	if (user?.memberType !== 'AGENT') {
 		router.back();
@@ -209,7 +207,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 								<Stack className="price-year-after-price">
 									<Typography className="title">Price</Typography>
 									<input
-										type="text"
+										type="number"
 										className="description-input"
 										placeholder={'Price'}
 										value={insertPropertyData.propertyPrice}
