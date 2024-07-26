@@ -17,10 +17,12 @@ import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../apollo/store';
 import { Logout } from '@mui/icons-material';
 import { REACT_APP_API_URL } from '../config';
+import BasicPopover from './notification/Notification';
 
 const Top = () => {
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
+
 	const { t, i18n } = useTranslation('common');
 	const router = useRouter();
 	const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
@@ -85,9 +87,9 @@ const Top = () => {
 		}
 	};
 
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
+	// const handleClose = () => {
+	// 	setAnchorEl(null);
+	// };
 
 	const handleHover = (event: any) => {
 		if (anchorEl !== event.currentTarget) {
@@ -95,6 +97,14 @@ const Top = () => {
 		} else {
 			setAnchorEl(null);
 		}
+	};
+
+	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClose = () => {
+		setAnchorEl(null);
 	};
 
 	const StyledMenu = styled((props: MenuProps) => (
@@ -166,7 +176,7 @@ const Top = () => {
 					<Stack className={'container'}>
 						<Box component={'div'} className={'logo-box'}>
 							<Link href={'/'}>
-								<img src="/img/logo/logoWhite.svg" alt="" />
+								<img src="/img/logo/logo.png" alt="" />
 							</Link>
 						</Box>
 						<Box component={'div'} className={'router-box'}>
@@ -230,7 +240,8 @@ const Top = () => {
 							)}
 
 							<div className={'lan-box'}>
-								{user?._id && <NotificationsOutlinedIcon className={'notification-icon'} />}
+								{user?._id && <BasicPopover />}
+
 								<Button
 									disableRipple
 									className="btn-lang"
