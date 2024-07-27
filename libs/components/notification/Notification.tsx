@@ -3,19 +3,21 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import { useQuery, useReactiveVar } from '@apollo/client';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { GET_NOTIFICATIONS } from '../../../apollo/user/query';
 import { T } from '../../types/common';
 import { Notification } from '../../types/notification/notification';
 import { userVar } from '../../../apollo/store';
 import { Badge } from '@mui/material';
 import { NotificationStatus } from '../../enums/notification.enum';
+import { MARKNOTIFICATIONREAD } from '../../../apollo/user/mutation';
 export default function BasicPopover() {
 	const user = useReactiveVar(userVar);
 	const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 	const [notification, setNotification] = React.useState<Notification[]>([]);
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
+		markNotificationsAsRead();
 	};
 
 	const handleClose = () => {
@@ -40,6 +42,16 @@ export default function BasicPopover() {
 		},
 	});
 
+	const [markNotificationsAsRead] = useMutation(MARKNOTIFICATIONREAD, {
+		variables: { ids: notification.map((n) => n._id) },
+		onCompleted: () => {
+			getNotificationsRefetch(); // 성공적으로 업데이트 후 알림 다시 가져오기
+		},
+		onError: (error) => {
+			console.error('Error updating notifications:', error);
+		},
+	});
+
 	return (
 		<div>
 			<Badge
@@ -50,7 +62,7 @@ export default function BasicPopover() {
 				}
 				color="secondary"
 			>
-				<NotificationsOutlinedIcon onClick={handleClick} />
+				<NotificationsOutlinedIcon style={{ cursor: 'pointer' }} onClick={handleClick} />
 			</Badge>
 			<Popover
 				id={id}

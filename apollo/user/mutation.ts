@@ -328,3 +328,21 @@ export const UNSUBSCRIBE = gql`
 		}
 	}
 `;
+
+export const MARKNOTIFICATIONREAD = gql`
+	mutation MarkNotificationsAsRead($ids: [String!]!) {
+		markNotificationsAsRead(ids: $ids) {
+			_id
+			notificationType
+			notificationStatus
+			notificationGroup
+			notificationTitle
+			notificationDesc
+			authorId
+			receiverId
+			propertyId
+			articleId
+			createdAt
+		}
+	}
+`;
