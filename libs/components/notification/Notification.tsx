@@ -1,23 +1,63 @@
 import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
-import { GET_NOTIFICATIONS } from '../../../apollo/user/query';
+import { GET_NOTIFICATIONS, MARK_NOTIFICATION_READ } from '../../../apollo/user/query';
 import { T } from '../../types/common';
 import { Notification } from '../../types/notification/notification';
 import { userVar } from '../../../apollo/store';
-import { Badge } from '@mui/material';
+import { Badge, Stack } from '@mui/material';
 import { NotificationStatus } from '../../enums/notification.enum';
 import { MARKNOTIFICATIONREAD } from '../../../apollo/user/mutation';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
+dayjs.locale('ko');
+
 export default function BasicPopover() {
 	const user = useReactiveVar(userVar);
+	const router = useRouter();
 	const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 	const [notification, setNotification] = React.useState<Notification[]>([]);
-	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleClick = (event: React.MouseEvent<HTMLButtonElement>, notificationId: string) => {
 		setAnchorEl(event.currentTarget);
-		markNotificationsAsRead();
+		// markNotificationsAsRead();
+	};
+
+	const [markNotificationAsRead] = useMutation(MARK_NOTIFICATION_READ, {
+		onCompleted: () => {
+			getNotificationsRefetch(); // 성공적으로 업데이트 후 알림 다시 가져오기
+		},
+		onError: (error) => {
+			console.error('Error updating notifications:', error);
+		},
+	});
+
+	const handleClickRead = (notification: Notification) => {
+		markNotificationAsRead({
+			variables: { notificationId: notification._id },
+			onCompleted: () => {
+				// Redirect to the member page after marking as read
+				switch (notification.notificationGroup) {
+					case 'MEMBER':
+						router.push(`/member?memberId=${notification.authorId}`);
+						break;
+					case 'PROPERTY':
+						router.push(`/property/detail?id=${notification.propertyId}`);
+						break;
+					case 'ARTICLE':
+						router.push(`/property/detail?id=${notification.articleId}`);
+						break;
+					default:
+						router.push(`/member?memberId=${notification.authorId}`);
+				}
+
+				getNotificationsRefetch();
+			},
+		});
 	};
 
 	const handleClose = () => {
@@ -35,20 +75,10 @@ export default function BasicPopover() {
 		refetch: getNotificationsRefetch,
 	} = useQuery(GET_NOTIFICATIONS, {
 		fetchPolicy: 'cache-and-network',
-		variables: { input: '' },
+		variables: { userId: user._id },
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
-			if (data?.getNotifications) setNotification(data?.getNotifications);
-		},
-	});
-
-	const [markNotificationsAsRead] = useMutation(MARKNOTIFICATIONREAD, {
-		variables: { ids: notification.map((n) => n._id) },
-		onCompleted: () => {
-			getNotificationsRefetch(); // 성공적으로 업데이트 후 알림 다시 가져오기
-		},
-		onError: (error) => {
-			console.error('Error updating notifications:', error);
+			if (data?.getNotificationsByUserId) setNotification(data?.getNotificationsByUserId);
 		},
 	});
 
@@ -65,6 +95,8 @@ export default function BasicPopover() {
 				<NotificationsOutlinedIcon style={{ cursor: 'pointer' }} onClick={handleClick} />
 			</Badge>
 			<Popover
+				sx={{ marginTop: 5 }}
+				style={{ height: '500px' }}
 				id={id}
 				open={open}
 				anchorEl={anchorEl}
@@ -77,9 +109,23 @@ export default function BasicPopover() {
 				{notification?.map((ele: Notification) => {
 					if (ele.receiverId === user._id) {
 						return (
-							<Typography key={ele._id} sx={{ p: 2 }}>
-								{ele.notificationDesc}
-							</Typography>
+							<Stack key={ele._id} sx={{ m: 3, cursor: 'pointer' }} onClick={() => handleClickRead(ele)}>
+								<div
+									style={{
+										background: ele.notificationStatus === NotificationStatus.READ ? 'white' : '#e0dfdf',
+										padding: '15px',
+										borderRadius: '15px',
+										border: '1px solid black',
+										width: '400px',
+									}}
+								>
+									<Typography>{ele.notificationTitle}</Typography>
+									<Typography>{ele.notificationDesc}</Typography>
+									<Typography variant="body2" color="textSecondary">
+										{dayjs(ele.createdAt).fromNow()}
+									</Typography>
+								</div>
+							</Stack>
 						);
 					}
 				})}

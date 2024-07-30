@@ -618,8 +618,8 @@ export const GET_MEMBER_FOLLOWINGS = gql`
 `;
 
 export const GET_NOTIFICATIONS = gql`
-	query GetNotifications {
-		getNotifications {
+	query GetNotificationsByUserId($userId: String!) {
+		getNotificationsByUserId(userId: $userId) {
 			_id
 			notificationType
 			notificationStatus
@@ -630,6 +630,25 @@ export const GET_NOTIFICATIONS = gql`
 			receiverId
 			propertyId
 			articleId
+			createdAt
+		}
+	}
+`;
+
+export const MARK_NOTIFICATION_READ = gql`
+	mutation MarkNotificationAsRead($notificationId: String!) {
+		markNotificationAsRead(notificationId: $notificationId)
+	}
+`;
+
+export const GET_NOTICE = gql`
+	query GetNotice {
+		getNotice {
+			_id
+			noticeCategory
+			noticeStatus
+			noticeTitle
+			noticeContent
 			createdAt
 		}
 	}

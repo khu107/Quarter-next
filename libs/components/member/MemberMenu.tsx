@@ -5,8 +5,8 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Link from 'next/link';
 import { Member } from '../../types/member/member';
 import { REACT_APP_API_URL } from '../../config';
-import { GET_MEMBER } from '../../../apollo/user/query';
 import { useQuery } from '@apollo/client';
+import { GET_MEMBER } from '../../../apollo/user/query';
 import { T } from '../../types/common';
 
 interface MemberMenuProps {
@@ -23,7 +23,6 @@ const MemberMenu = (props: MemberMenuProps) => {
 	const { memberId } = router.query;
 
 	/** APOLLO REQUESTS **/
-
 	const {
 		loading: getMemberLoading,
 		data: getMemberData,
@@ -31,15 +30,13 @@ const MemberMenu = (props: MemberMenuProps) => {
 		refetch: getMemberRefetch,
 	} = useQuery(GET_MEMBER, {
 		fetchPolicy: 'network-only',
-		variables: { 
-			input: memberId, 
+		variables: { input: memberId },
+		skip: !memberId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setMember(data?.getMember);
 		},
-		onCompleted(data: T) {
-			setMember(data.getMember?.list);
-		},
-		
 	});
-
 	if (device === 'mobile') {
 		return <div>MEMBER MENU MOBILE</div>;
 	} else {

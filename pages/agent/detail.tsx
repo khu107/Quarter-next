@@ -6,7 +6,7 @@ import PropertyBigCard from '../../libs/components/common/PropertyBigCard';
 import ReviewCard from '../../libs/components/agent/ReviewCard';
 import { Box, Button, Pagination, Stack, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import {useMutation, useQuery, useReactiveVar } from '@apollo/client';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { Property } from '../../libs/types/property/property';
 import { Member } from '../../libs/types/member/member';
@@ -80,6 +80,8 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 			});
 		},
 	});
+
+	console.log('agent', agent);
 
 	const {
 		loading: getPropertiesLoading,
@@ -209,9 +211,11 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 							{agentProperties.map((property: Property) => {
 								return (
 									<div className={'wrap-main'} key={property?._id}>
-										<PropertyBigCard property={property}
-										likePropertyHandler={likePropertyHandler}
-										key={property?._id} />
+										<PropertyBigCard
+											property={property}
+											likePropertyHandler={likePropertyHandler}
+											key={property?._id}
+										/>
 									</div>
 								);
 							})}
