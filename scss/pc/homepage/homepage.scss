@@ -117,7 +117,8 @@
 		.trend-properties {
 			padding: 108px 0px 76px;
 			width: 100%;
-			height: 697px;
+			height: 797px;
+
 			display: flex;
 			flex-direction: row;
 			.container {
@@ -136,20 +137,20 @@
 					}
 					.trend-property-swiper {
 						width: 100%;
-						height: 400px;
+						height: 530px;
 						display: flex;
 						flex-direction: row;
 						.trend-property-slide {
 							width: auto;
 							height: auto;
 							display: flex;
-							margin: 10px 0 0 10px;
+							margin: 10px 0 0 5px;
 						}
 					}
 					.trend-card-box {
 						position: relative;
-						width: 300px;
-						height: 375px;
+						width: 375px;
+						height: 510px;
 						display: flex;
 						flex-direction: column;
 						transition: transform 0.3s;
@@ -160,10 +161,20 @@
 						.card-img {
 							position: relative;
 							width: 100%;
-							height: 203px;
+							height: 250px;
 							background-size: cover;
 							border-radius: 12px 12px 0px 0px;
 							cursor: pointer;
+							span {
+								text-align: center;
+								width: 100px;
+								position: absolute;
+								padding: 5px;
+								font-size: 14px;
+								color: white;
+								right: 8px;
+								top: 10px;
+							}
 							div {
 								position: absolute;
 								padding: 8px 12px;
@@ -190,24 +201,25 @@
 							background: #fff;
 							box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
 							.title {
+								margin-top: 20px;
 								overflow: hidden;
 								color: #181a20;
 								text-overflow: ellipsis;
 								white-space: nowrap;
 								font-family: $font;
-								font-size: 15px;
+								font-size: 22px;
 								font-style: normal;
-								font-weight: 600;
+								font-weight: bold;
 								line-height: normal;
 								text-transform: capitalize;
 								cursor: pointer;
 							}
 							.desc {
-								margin-top: 5px;
+								margin-top: 10px;
 								overflow: hidden;
 								color: #717171;
 								font-family: $font;
-								font-size: 13px;
+								font-size: 16px;
 								font-style: normal;
 								font-weight: 400;
 								line-height: normal;
@@ -215,7 +227,7 @@
 								white-space: nowrap;
 							}
 							.options {
-								margin-top: 15px;
+								margin-top: 20px;
 								display: flex;
 								flex-direction: row;
 								justify-content: space-between;
@@ -238,18 +250,14 @@
 								}
 							}
 							.bott {
+								margin-top: 8px;
 								display: flex;
 								flex-direction: row;
 								justify-content: space-between;
 								align-items: center;
-								p {
-									color: #181a20;
-									font-family: $font;
-									font-size: 13px;
-									font-style: normal;
-									font-weight: 400;
-									line-height: normal;
-									text-transform: capitalize;
+								img {
+									width: 36px;
+									border-radius: 50%;
 								}
 								button {
 									margin-left: 7px;

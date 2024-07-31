@@ -120,7 +120,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 						) : (
 							<Swiper
 								className={'trend-property-swiper'}
-								slidesPerView={'auto'}
+								slidesPerView={3}
 								spaceBetween={15}
 								modules={[Autoplay, Navigation, Pagination]}
 								navigation={{

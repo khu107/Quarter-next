@@ -12,7 +12,7 @@ import { userVar } from '../../../apollo/store';
 
 interface TrendPropertyCardProps {
 	property: Property;
-	likePropertyHandler: any
+	likePropertyHandler: any;
 }
 
 const TrendPropertyCard = (props: TrendPropertyCardProps) => {
@@ -22,11 +22,11 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
 	const user = useReactiveVar(userVar);
 
 	/** HANDLERS **/
-     
-   const pushDetailHandler = async (propertyId: string) => {
-	console.log("id:", propertyId);
-	await router.push({pathname: `/property/detail`, query: {id: propertyId}})
-   }
+
+	const pushDetailHandler = async (propertyId: string) => {
+		console.log('id:', propertyId);
+		await router.push({ pathname: `/property/detail`, query: { id: propertyId } });
+	};
 
 	if (device === 'mobile') {
 		return (
@@ -35,14 +35,21 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
 					component={'div'}
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
-					onClick={() => {pushDetailHandler(property._id)}}
+					onClick={() => {
+						pushDetailHandler(property._id);
+					}}
 				>
 					<div>${property.propertyPrice}</div>
 				</Box>
 				<Box component={'div'} className={'info'}>
-					<strong className={'title'}
-					onClick={() => {pushDetailHandler(property._id)}}
-					>{property.propertyTitle}</strong>
+					<strong
+						className={'title'}
+						onClick={() => {
+							pushDetailHandler(property._id);
+						}}
+					>
+						{property.propertyTitle}
+					</strong>
 					<p className={'desc'}>{property.propertyDesc ?? 'no description'}</p>
 					<div className={'options'}>
 						<div>
@@ -89,14 +96,50 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
 					component={'div'}
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
-					onClick={() => {pushDetailHandler(property._id)}}
+					onClick={() => {
+						pushDetailHandler(property._id);
+					}}
 				>
-					<div>${property.propertyPrice}</div>
+					<span>
+						{property.propertyBarter && !property.propertyRent && (
+							<span
+								style={{
+									background: '#FF5A3C', // Barter일 때의 색상
+								}}
+							>
+								Barter
+							</span>
+						)}
+						{property.propertyRent && !property.propertyBarter && (
+							<span
+								style={{
+									background: '#77C720', // Rent일 때의 색상
+								}}
+							>
+								Rent
+							</span>
+						)}
+						{property.propertyRent && property.propertyBarter && (
+							<span
+								style={{
+									background: '#0B2C3D', // Barter / Rent일 때의 색상
+								}}
+							>
+								Barter / Rent
+							</span>
+						)}
+					</span>
 				</Box>
 				<Box component={'div'} className={'info'}>
-					<strong className={'title'}
-					onClick={() => {pushDetailHandler(property._id)}}
-					>{property.propertyTitle}</strong>
+					<div style={{ color: 'red' }}>$ {property?.propertyPrice}</div>
+					<strong
+						className={'title'}
+						onClick={() => {
+							pushDetailHandler(property._id);
+						}}
+					>
+						{property.propertyTitle}
+					</strong>
 					<p className={'desc'}>{property.propertyDesc ?? 'no description'}</p>
 					<div className={'options'}>
 						<div>
@@ -114,10 +157,10 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
 					</div>
 					<Divider sx={{ mt: '15px', mb: '17px' }} />
 					<div className={'bott'}>
-						<p>
-							{property.propertyRent ? 'Rent' : ''} {property.propertyRent && property.propertyBarter && '/'}{' '}
-							{property.propertyBarter ? 'Barter' : ''}
-						</p>
+						<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+							<img src={`${REACT_APP_API_URL}/${property?.memberData?.memberImage}`} alt="" />
+							<span>by {property?.memberData?.memberNick}</span>
+						</div>
 						<div className="view-like-box">
 							<IconButton color={'default'}>
 								<RemoveRedEyeIcon />
@@ -125,7 +168,7 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
 							<Typography className="view-cnt">{property?.propertyViews}</Typography>
 							<IconButton color={'default'} onClick={() => likePropertyHandler(user, property?._id)}>
 								{property?.meLiked && property?.meLiked[0]?.myFavorite ? (
-									<FavoriteIcon style={{ color: 'red' }}  />
+									<FavoriteIcon style={{ color: 'red' }} />
 								) : (
 									<FavoriteIcon />
 								)}
