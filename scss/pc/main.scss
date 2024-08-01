@@ -198,6 +198,7 @@ body::-webkit-scrollbar {
 				background: #f2f6f7;
 				box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 				border-radius: 12px;
+				z-index: 999999;
 				.select-box {
 					width: 712px;
 					display: flex;
@@ -424,7 +425,7 @@ body::-webkit-scrollbar {
 		.container {
 			margin-top: 175px;
 			strong {
-				color: #fff;
+				color: black;
 				font-family: $font;
 				font-size: 48px;
 				font-style: normal;
@@ -434,7 +435,7 @@ body::-webkit-scrollbar {
 				text-transform: capitalize;
 			}
 			span {
-				color: #fff;
+				color: black;
 				font-family: $font;
 				font-size: 24px;
 				font-style: normal;

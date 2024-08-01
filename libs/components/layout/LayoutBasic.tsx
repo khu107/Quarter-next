@@ -31,48 +31,48 @@ const withLayoutBasic = (Component: any) => {
 				case '/property':
 					title = 'Property Search';
 					desc = 'We are glad to see you again!';
-					bgImage = '/img/banner/properties.png';
+					bgImage = '/img/banner/24.jpg';
 					break;
 				case '/agent':
 					title = 'Agents';
 					desc = 'Home / For Rent';
-					bgImage = '/img/banner/agents.webp';
+					bgImage = '/img/banner/24.jpg';
 					break;
 				case '/agent/detail':
 					title = 'Agent Page';
 					desc = 'Home / For Rent';
-					bgImage = '/img/banner/header2.svg';
+					bgImage = '/img/banner/24.jpg';
 					break;
 				case '/mypage':
 					title = 'my page';
 					desc = 'Home / For Rent';
-					bgImage = '/img/banner/header1.svg';
+					bgImage = '/img/banner/24.jpg';
 					break;
 				case '/community':
 					title = 'Community';
 					desc = 'Home / For Rent';
-					bgImage = '/img/banner/header2.svg';
+					bgImage = '/img/banner/24.jpg';
 					break;
 				case '/community/detail':
 					title = 'Community Detail';
 					desc = 'Home / For Rent';
-					bgImage = '/img/banner/header2.svg';
+					bgImage = '/img/banner/24.jpg';
 					break;
 				case '/cs':
 					title = 'CS';
 					desc = 'We are glad to see you again!';
-					bgImage = '/img/banner/header2.svg';
+					bgImage = '/img/banner/24.jpg';
 					break;
 				case '/account/join':
 					title = 'Login/Signup';
 					desc = 'Authentication Process';
-					bgImage = '/img/banner/header2.svg';
+					bgImage = '/img/banner/24.jpg';
 					setAuthHeader(true);
 					break;
 				case '/member':
 					title = 'Member Page';
 					desc = 'Home / For Rent';
-					bgImage = '/img/banner/header1.svg';
+					bgImage = '/img/banner/24.jpg';
 					break;
 				default:
 					break;
@@ -94,7 +94,7 @@ const withLayoutBasic = (Component: any) => {
 				<>
 					<Head>
 						<title>Quarter</title>
-						<meta name={'title'} content={`Nestar`} />
+						<meta name={'title'} content={`Quarter`} />
 					</Head>
 					<Stack id="mobile-wrap">
 						<Stack id={'top'}>
@@ -116,7 +116,7 @@ const withLayoutBasic = (Component: any) => {
 				<>
 					<Head>
 						<title>Quarter</title>
-						<meta name={'title'} content={`Nestar`} />
+						<meta name={'title'} content={`Quarter`} />
 					</Head>
 					<Stack id="pc-wrap">
 						<Stack id={'top'}>
@@ -128,7 +128,6 @@ const withLayoutBasic = (Component: any) => {
 							style={{
 								backgroundImage: `url(${memoizedValues.bgImage})`,
 								backgroundSize: 'cover',
-								boxShadow: 'inset 10px 40px 150px 40px rgb(24 22 36)',
 							}}
 						>
 							<Stack className={'container'}>
