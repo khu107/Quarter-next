@@ -23,7 +23,7 @@ export default function CounterUp() {
 	];
 
 	return (
-		<div style={{}}>
+		<div style={{ background: '#F6F6F6' }}>
 			<Stack className="container" justifyContent={'center'} height={'430px'} bg={'#F2F6F7'}>
 				<Grid container spacing={4}>
 					{data.map((item, index) => (

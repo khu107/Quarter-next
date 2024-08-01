@@ -114,6 +114,71 @@
 				}
 			}
 		}
+		.sels-properties {
+			padding: 132px 0px 94px;
+			width: 100%;
+			height: 716px;
+			display: flex;
+			flex-direction: row;
+			background: white;
+			.container {
+				display: flex;
+				flex-direction: row;
+				.right {
+					padding: 32px 0px 94px;
+					width: 50%;
+					span {
+						color: #181a20;
+						font-family: 'Poppins', sans-serif;
+						font-size: 34px;
+						font-style: normal;
+						font-weight: 500;
+						line-height: 150%;
+						letter-spacing: -0.646px;
+						text-transform: capitalize;
+					}
+					p {
+						font-size: 16px;
+						line-height: 1.5;
+						color: #677b86;
+					}
+					.option {
+						margin-top: 20px;
+						display: flex;
+						flex-direction: row;
+						width: 400px;
+						justify-content: space-between;
+						div {
+							display: flex;
+							flex-direction: column;
+							img {
+								margin-right: 5px;
+								width: 27px;
+								height: 27px;
+							}
+							span {
+								color: #181a20;
+								font-family: $font;
+								font-size: 16px;
+								font-style: normal;
+								font-weight: 400;
+								line-height: normal;
+							}
+						}
+					}
+				}
+				.left {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					width: 50%;
+					img {
+						width: 520px;
+						height: 600px;
+					}
+				}
+			}
+		}
 		.trend-properties {
 			padding: 108px 0px 76px;
 			width: 100%;

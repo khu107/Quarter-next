@@ -199,6 +199,37 @@ export const GET_PROPERTIES = gql`
 	}
 `;
 
+export const GET_LAST_SOLD_PROPERTY = gql`
+	query GetLastSoldProperty {
+		getLastSoldProperty {
+			_id
+			propertyType
+			propertyStatus
+			propertyLocation
+			propertyAddress
+			propertyTitle
+			propertyPrice
+			propertySquare
+			propertyBeds
+			propertyRooms
+			propertyViews
+			propertyLikes
+			propertyComments
+			propertyRank
+			propertyImages
+			propertyDesc
+			propertyBarter
+			propertyRent
+			memberId
+			soldAt
+			deletedAt
+			constructedAt
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
 export const GET_AGENT_PROPERTIES = gql`
 	query GetAgentProperties($input: AgentPropertiesInquiry!) {
 		getAgentProperties(input: $input) {
