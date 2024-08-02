@@ -19,7 +19,7 @@ interface PropertyCardType {
 	recentlyVisited?: boolean;
 }
 
-const PropertyCard = (props: PropertyCardType) => {
+const MyPageCard = (props: PropertyCardType) => {
 	const { property, likePropertyHandler, myFavorites, recentlyVisited } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
@@ -98,15 +98,7 @@ const PropertyCard = (props: PropertyCardType) => {
 					</Stack>
 					<Stack className="divider"></Stack>
 					<Stack className="type-buttons">
-						<Stack className="type">
-							<img
-								src={`${REACT_APP_API_URL}/${property?.memberData?.memberImage}`}
-								alt="avatar"
-								width={'50px'}
-								height={'50px'}
-								style={{ borderRadius: '50%' }}
-							/>
-						</Stack>
+						<Stack className="type"></Stack>
 						{!recentlyVisited && (
 							<Stack className="buttons">
 								<IconButton color={'default'}>
@@ -132,4 +124,4 @@ const PropertyCard = (props: PropertyCardType) => {
 	}
 };
 
-export default PropertyCard;
+export default MyPageCard;

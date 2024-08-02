@@ -213,12 +213,16 @@
 						flex-wrap: wrap;
 						gap: 23px;
 						.card-config {
-							width: 296px;
-							height: 413px;
+							width: 100%;
+							height: 288px;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							flex-direction: row;
+							padding: 0px 30px 0px 30px;
 							margin-bottom: 7px;
 							border-radius: 12px;
 							background: #fff;
-							border: 1px solid red;
 							box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
 							.top {
 								position: relative;
@@ -231,7 +235,7 @@
 									width: 100%;
 									height: 100%;
 									object-fit: cover;
-									border-radius: 12px 12px 0 0;
+									border-radius: 12px 12px 12px 12px;
 								}
 								.top-badge {
 									position: absolute;
@@ -257,34 +261,51 @@
 										height: 16px;
 									}
 								}
-								.price-box {
-									position: absolute;
-									bottom: 20px;
-									left: 20px;
-									padding: 8px 15px;
-									align-items: center;
-									border-radius: 6px;
-									border: 1px solid rgba(255, 255, 255, 0.5);
-									background: #fff;
-									p {
-										color: #181a20;
-										font-family: $font;
-										font-size: 15px;
-										font-style: normal;
-										font-weight: 600;
-										line-height: normal;
-									}
-								}
 							}
 							.bottom {
 								width: 100%;
-								height: 173px;
-								padding: 20px 16px 10px 16px;
+								height: 200px;
+								padding: 0px 16px 10px 16px;
+								.type {
+									flex-direction: row;
+									align-items: center;
+									justify-content: space-between;
+									p {
+										color: #181a20;
+										font-family: $font;
+										font-size: 16px;
+										font-style: normal;
+										line-height: normal;
+									}
+									.disabled-type {
+										color: rgba(143, 143, 143, 0.54);
+										font-family: $font;
+										font-style: normal;
+										line-height: normal;
+									}
+									.price-box {
+										align-items: center;
+										border-radius: 6px;
+										border: 1px solid rgba(255, 255, 255, 0.5);
+										background: #fff;
+										p {
+											color: red;
+											font-family: $font;
+											font-size: 15px;
+											font-style: normal;
+											font-weight: 600;
+											line-height: normal;
+										}
+									}
+								}
+
 								.name-address {
 									width: 100%;
 									height: 48px;
 									gap: 5px;
 									margin-bottom: 20px;
+									margin-top: 20px;
+
 									.name {
 										width: 100%;
 										height: 23px;
@@ -299,6 +320,7 @@
 											text-transform: capitalize;
 										}
 									}
+
 									.address {
 										width: 100%;
 										overflow: hidden;
@@ -343,23 +365,23 @@
 									width: 100%;
 									justify-content: space-between;
 									align-items: center;
-									.type {
-										flex-direction: row;
-										align-items: center;
-										gap: 7px;
-										p {
-											color: #181a20;
-											font-family: $font;
-											font-style: normal;
-											line-height: normal;
-										}
-										.disabled-type {
-											color: rgba(143, 143, 143, 0.54);
-											font-family: $font;
-											font-style: normal;
-											line-height: normal;
-										}
-									}
+									// .type {
+									// 	flex-direction: row;
+									// 	align-items: center;
+									// 	gap: 7px;
+									// 	p {
+									// 		color: #181a20;
+									// 		font-family: $font;
+									// 		font-style: normal;
+									// 		line-height: normal;
+									// 	}
+									// 	.disabled-type {
+									// 		color: rgba(143, 143, 143, 0.54);
+									// 		font-family: $font;
+									// 		font-style: normal;
+									// 		line-height: normal;
+									// 	}
+									// }
 									.buttons {
 										flex-direction: row;
 										width: auto;

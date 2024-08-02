@@ -7,6 +7,7 @@ import { Property } from '../../types/property/property';
 import { T } from '../../types/common';
 import { GET_VISITED } from '../../../apollo/user/query';
 import { useQuery } from '@apollo/client';
+import MyPageCard from './MyPageCard';
 
 const RecentlyVisited: NextPage = () => {
 	const device = useDeviceDetect();
@@ -22,15 +23,13 @@ const RecentlyVisited: NextPage = () => {
 		refetch: getVisitedRefetch,
 	} = useQuery(GET_VISITED, {
 		fetchPolicy: 'network-only',
-		variables: { 
-			input: searchVisited, 
+		variables: {
+			input: searchVisited,
 		},
 		onCompleted(data: T) {
 			setRecentlyVisited(data.getVisited?.list);
 			setTotal(data?.getVisited?.metaCounter[0]?.total);
-
 		},
-		
 	});
 	/** HANDLERS **/
 	const paginationHandler = (e: T, value: number) => {
@@ -51,7 +50,7 @@ const RecentlyVisited: NextPage = () => {
 				<Stack className="favorites-list-box">
 					{recentlyVisited?.length ? (
 						recentlyVisited?.map((property: Property) => {
-							return <PropertyCard property={property} recentlyVisited={true} />;
+							return <MyPageCard property={property} recentlyVisited={true} />;
 						})
 					) : (
 						<div className={'no-data'}>

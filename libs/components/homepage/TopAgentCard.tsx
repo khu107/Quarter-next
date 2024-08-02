@@ -33,6 +33,7 @@ const TopAgentCard = (props: TopAgentProps) => {
 
 				<strong>{agent?.memberNick}</strong>
 				<span>{agent?.memberType}</span>
+				<div className="rank">Rank: {agent?.memberRank}</div>
 			</Stack>
 		);
 	}

@@ -21,17 +21,16 @@ import { T } from '../../libs/types/common';
 import EditIcon from '@mui/icons-material/Edit';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { BoardArticle } from '../../libs/types/board-article/board-article';
-import {
-	   CREATE_COMMENT,
-       LIKE_TARGET_BOARD_ARTICLE,
-	   UPDATE_COMMENT
-	 } from '../../apollo/user/mutation';
-import { 
-	GET_BOARD_ARTICLE, 
-	GET_COMMENTS
- } from '../../apollo/user/query';
+import { CREATE_COMMENT, LIKE_TARGET_BOARD_ARTICLE, UPDATE_COMMENT } from '../../apollo/user/mutation';
+import { GET_BOARD_ARTICLE, GET_COMMENTS } from '../../apollo/user/query';
 import { Messages } from '../../libs/config';
-import { sweetConfirmAlert, sweetErrorHandling, sweetMixinErrorAlert, sweetMixinSuccessAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import {
+	sweetConfirmAlert,
+	sweetErrorHandling,
+	sweetMixinErrorAlert,
+	sweetMixinSuccessAlert,
+	sweetTopSmallSuccessAlert,
+} from '../../libs/sweetAlert';
 import { CommentUpdate } from '../../libs/types/comment/comment.update';
 const ToastViewerComponent = dynamic(() => import('../../libs/components/community/TViewer'), { ssr: false });
 
@@ -109,8 +108,6 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 		},
 	});
 
-
-
 	/** LIFECYCLES **/
 	useEffect(() => {
 		if (articleId) setSearchFilter({ ...searchFilter, search: { commentRefId: articleId } });
@@ -127,8 +124,6 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 			{ shallow: true },
 		);
 	};
-
-
 
 	const likeBoArticleHandler = async (user: any, id: any) => {
 		try {
@@ -154,76 +149,73 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 	};
 
 	const createCommentHandler = async () => {
-		if(!comment) return;
- 		try {
+		if (!comment) return;
+		try {
 			if (!user?._id) throw new Error(Messages.error2);
-		    const commentInput: CommentInput = {
+			const commentInput: CommentInput = {
 				commentGroup: CommentGroup.ARTICLE,
 				commentRefId: articleId,
 				commentContent: comment,
 			};
-             
+
 			await createComment({
 				variables: {
 					input: commentInput,
 				},
 			});
-		 	await getCommentsRefetch({ input: searchFilter });
-		 	await boardArticleRefetch({ input: articleId });
-            setComment('');
+			await getCommentsRefetch({ input: searchFilter });
+			await boardArticleRefetch({ input: articleId });
+			setComment('');
 			await sweetMixinSuccessAlert('success', 800);
-			} catch (err: any) {
+		} catch (err: any) {
 			sweetErrorHandling(err).then();
 		}
 	};
 
 	const updateButtonHandler = async (commentId: string, commentStatus?: CommentStatus.DELETE) => {
-		
- 		try {
+		try {
 			if (!user?._id) throw new Error(Messages.error2);
-		    if(!commentId) throw new Error("Select a comment to update!");
-			if(updatedComment === comments?.find((comment) => comment?._id === commentId)?.commentContent) return;
+			if (!commentId) throw new Error('Select a comment to update!');
+			if (updatedComment === comments?.find((comment) => comment?._id === commentId)?.commentContent) return;
 
 			const updateData: CommentUpdate = {
 				_id: commentId,
-				...(commentStatus && {commentStatus: commentStatus }),
-				...(updatedComment && {commentContent: updatedComment}),
+				...(commentStatus && { commentStatus: commentStatus }),
+				...(updatedComment && { commentContent: updatedComment }),
 			};
-			if(!updateData?.commentContent && !updateData?.commentStatus)
-				throw new Error("Provide data update your comment!");
-			if(commentStatus) {
-				if (await sweetConfirmAlert("Do you want to delete the comment?")) {
+			if (!updateData?.commentContent && !updateData?.commentStatus)
+				throw new Error('Provide data update your comment!');
+			if (commentStatus) {
+				if (await sweetConfirmAlert('Do you want to delete the comment?')) {
 					await updateComment({
 						variables: {
 							input: updateData,
 						},
 					});
-					await sweetMixinSuccessAlert("Successfully Deleted!");
-				} else return
+					await sweetMixinSuccessAlert('Successfully Deleted!');
+				} else return;
 			} else {
 				await updateComment({
 					variables: {
 						input: updateData,
 					},
 				});
-				await sweetMixinSuccessAlert("Successfully updated!");
-
+				await sweetMixinSuccessAlert('Successfully updated!');
 			}
-		 	await getCommentsRefetch({ input: searchFilter });
-		 
-            setComment('');
+			await getCommentsRefetch({ input: searchFilter });
+
+			setComment('');
 			await sweetMixinSuccessAlert('success', 800);
-			} catch (err: any) {
+		} catch (err: any) {
 			sweetErrorHandling(err).then();
 		} finally {
 			setOpenBackdrop(false);
-			setUpdatedComment("");
+			setUpdatedComment('');
 			setUpdatedCommentWordsCnt(0);
-			setUpdatedCommentId("");
+			setUpdatedCommentId('');
 		}
-		
 	};
-	
+
 	const getCommentMemberImage = (imageUrl: string | undefined) => {
 		if (imageUrl) return `${process.env.REACT_APP_API_URL}/${imageUrl}`;
 		else return '/img/community/articleImg.png';
@@ -340,7 +332,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 										</Stack>
 										<Stack className="info">
 											<Stack className="icon-info">
-											{boardArticle?.meLiked && boardArticle?.meLiked[0]?.myFavorite ? (
+												{boardArticle?.meLiked && boardArticle?.meLiked[0]?.myFavorite ? (
 													<ThumbUpAltIcon onClick={() => likeBoArticleHandler(user, boardArticle?._id)} />
 												) : (
 													<ThumbUpOffAltIcon onClick={() => likeBoArticleHandler(user, boardArticle?._id)} />
@@ -355,7 +347,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 											</Stack>
 											<Stack className="divider"></Stack>
 											<Stack className="icon-info">
-												{ total > 0 ? <ChatIcon /> : <ChatBubbleOutlineRoundedIcon /> }
+												{total > 0 ? <ChatIcon /> : <ChatBubbleOutlineRoundedIcon />}
 
 												<Typography className="text">{boardArticle?.articleComments}</Typography>
 											</Stack>
@@ -367,7 +359,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 									<Stack className="like-and-dislike">
 										<Stack className="top">
 											<Button>
-											{boardArticle?.meLiked && boardArticle?.meLiked[0]?.myFavorite ? (
+												{boardArticle?.meLiked && boardArticle?.meLiked[0]?.myFavorite ? (
 													<ThumbUpAltIcon onClick={() => likeBoArticleHandler(user, boardArticle?._id)} />
 												) : (
 													<ThumbUpOffAltIcon onClick={() => likeBoArticleHandler(user, boardArticle?._id)} />

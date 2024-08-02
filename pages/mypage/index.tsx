@@ -34,8 +34,8 @@ const MyPage: NextPage = () => {
 	const category: any = router.query?.category ?? 'myProfile';
 
 	/** APOLLO REQUESTS **/
-   
-    const [subscribe] = useMutation(SUBSCRIBE);
+
+	const [subscribe] = useMutation(SUBSCRIBE);
 	const [unsubscribe] = useMutation(UNSUBSCRIBE);
 	const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
 
@@ -47,17 +47,17 @@ const MyPage: NextPage = () => {
 	/** HANDLERS **/
 	const subscribeHandler = async (id: string, refetch: any, query: any) => {
 		try {
-			console.log("id:", id);
+			console.log('id:', id);
 			if (!id) throw new Error(Messages.error1);
 			if (!user._id) throw new Error(Messages.error2);
-   
-			await subscribe ({
-			   variables: {
-				   input: id,
-			   },
+
+			await subscribe({
+				variables: {
+					input: id,
+				},
 			});
 			await sweetTopSmallSuccessAlert('Subscribed', 800);
-			await refetch({input: query})
+			await refetch({ input: query });
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
 		}
@@ -65,23 +65,22 @@ const MyPage: NextPage = () => {
 
 	const unsubscribeHandler = async (id: string, refetch: any, query: any) => {
 		try {
-			console.log("id:", id);
+			console.log('id:', id);
 			if (!id) throw new Error(Messages.error1);
 			if (!user._id) throw new Error(Messages.error2);
-   
-			await unsubscribe ({
-			   variables: {
-				   input: id,
-			   },
+
+			await unsubscribe({
+				variables: {
+					input: id,
+				},
 			});
 			await sweetTopSmallSuccessAlert('Unsubscribed', 800);
-			await refetch({input: query})
+			await refetch({ input: query });
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
 		}
 	};
 
-	
 	const likeMemberHandler = async (id: string, refetch: any, query: any) => {
 		try {
 			if (!id) return;
@@ -92,10 +91,9 @@ const MyPage: NextPage = () => {
 					input: id,
 				},
 			});
-		
-			await sweetTopSmallSuccessAlert('success', 800);
-			await refetch({input: query})
 
+			await sweetTopSmallSuccessAlert('success', 800);
+			await refetch({ input: query });
 		} catch (err: any) {
 			console.log('ERROR, likeMemberHandler ', err.message);
 			sweetMixinErrorAlert(err.message).then();

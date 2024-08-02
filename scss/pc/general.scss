@@ -173,11 +173,11 @@
 		div {
 			position: absolute;
 			padding: 12px;
-			top: 12px;
+			bottom: 82px;
 			left: 12px;
 			border-radius: 6px;
-			background: #eb6753;
-			color: #fff;
+			background: #f2f4f6;
+			color: black;
 			font-family: $font;
 			font-size: 12px;
 			font-style: normal;
@@ -293,10 +293,10 @@
 		top: 235px;
 		right: 20px;
 		border-radius: 12px;
-		background: #fff;
+		background: #f17742;
 		box-shadow: 0px 6px 15px 0px rgba(64, 79, 104, 0.05);
 		.month {
-			color: #181a20;
+			color: white;
 			text-align: center;
 			font-family: $font;
 			font-size: 13px;
@@ -305,7 +305,7 @@
 			line-height: normal;
 		}
 		.day {
-			color: #181a20;
+			color: white;
 			font-family: $font;
 			font-size: 20px;
 			font-style: normal;

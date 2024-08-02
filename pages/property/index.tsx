@@ -65,7 +65,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 	}, [router]);
 
 	useEffect(() => {
-		console.log("searchFilter", searchFilter)
+		console.log('searchFilter', searchFilter);
 		//getPropertiesRefetch({input: searchFilter}).then();
 	}, [searchFilter]);
 
@@ -82,26 +82,22 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 		setCurrentPage(value);
 	};
 
-
-	const likePropertyHandler = async(user: T, id: string) => {
-		try{
-			if(!id) return;
-			if(!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+	const likePropertyHandler = async (user: T, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
 
 			// execute likeTargetProperty Mutation
-			await likeTargetProperty(
-				{variables: {input: id}}
-			);
+			await likeTargetProperty({ variables: { input: id } });
 			//execute getPropertiesRefetch
-			await getPropertiesRefetch({input: initialInput});
-             await sweetTopSmallSuccessAlert("success", 400);
+			await getPropertiesRefetch({ input: initialInput });
+			await sweetTopSmallSuccessAlert('success', 400);
 		} catch (err: any) {
 			console.log('ERROR, likePropertyHandler ', err.message);
 			sweetMixinErrorAlert(err.message).then();
 		}
-	}
-	    
-	 
+	};
+
 	const sortingClickHandler = (e: MouseEvent<HTMLElement>) => {
 		setAnchorEl(e.currentTarget);
 		setSortingOpen(true);
@@ -184,7 +180,9 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 									</div>
 								) : (
 									properties.map((property: Property) => {
-										return <PropertyCard property={property} likePropertyHandler={likePropertyHandler} key={property?._id} />;
+										return (
+											<PropertyCard property={property} likePropertyHandler={likePropertyHandler} key={property?._id} />
+										);
 									})
 								)}
 							</Stack>
@@ -220,7 +218,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 PropertyList.defaultProps = {
 	initialInput: {
 		page: 1,
-		limit: 6,
+		limit: 5,
 		sort: 'createdAt',
 		direction: 'DESC',
 		search: {

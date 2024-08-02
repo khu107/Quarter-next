@@ -9,9 +9,7 @@ import { Notification } from '../../types/notification/notification';
 import { userVar } from '../../../apollo/store';
 import { Badge, Stack } from '@mui/material';
 import { NotificationStatus } from '../../enums/notification.enum';
-import { MARKNOTIFICATIONREAD } from '../../../apollo/user/mutation';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
@@ -24,7 +22,6 @@ export default function BasicPopover() {
 	const [notification, setNotification] = React.useState<Notification[]>([]);
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>, notificationId: string) => {
 		setAnchorEl(event.currentTarget);
-		// markNotificationsAsRead();
 	};
 
 	const [markNotificationAsRead] = useMutation(MARK_NOTIFICATION_READ, {
@@ -40,7 +37,6 @@ export default function BasicPopover() {
 		markNotificationAsRead({
 			variables: { notificationId: notification._id },
 			onCompleted: () => {
-				// Redirect to the member page after marking as read
 				switch (notification.notificationGroup) {
 					case 'MEMBER':
 						router.push(`/member?memberId=${notification.authorId}`);
@@ -96,7 +92,7 @@ export default function BasicPopover() {
 			</Badge>
 			<Popover
 				sx={{ marginTop: 5 }}
-				style={{ height: '500px' }}
+				style={{ height: '500px' }} // 고정된 크기 설정
 				id={id}
 				open={open}
 				anchorEl={anchorEl}
@@ -106,29 +102,43 @@ export default function BasicPopover() {
 					horizontal: 'left',
 				}}
 			>
-				{notification?.map((ele: Notification) => {
-					if (ele.receiverId === user._id) {
-						return (
-							<Stack key={ele._id} sx={{ m: 3, cursor: 'pointer' }} onClick={() => handleClickRead(ele)}>
-								<div
-									style={{
-										background: ele.notificationStatus === NotificationStatus.READ ? 'white' : '#e0dfdf',
-										padding: '15px',
-										borderRadius: '15px',
-										border: '1px solid black',
-										width: '400px',
-									}}
-								>
-									<Typography>{ele.notificationTitle}</Typography>
-									<Typography>{ele.notificationDesc}</Typography>
-									<Typography variant="body2" color="textSecondary">
-										{dayjs(ele.createdAt).fromNow()}
-									</Typography>
-								</div>
-							</Stack>
-						);
-					}
-				})}
+				{notification.length > 0 ? (
+					notification.map((ele: Notification) => {
+						if (ele.receiverId === user._id) {
+							return (
+								<Stack key={ele._id} sx={{ m: 3, cursor: 'pointer' }} onClick={() => handleClickRead(ele)}>
+									<div
+										style={{
+											background: ele.notificationStatus === NotificationStatus.READ ? 'white' : '#e0dfdf',
+											padding: '15px',
+											borderRadius: '15px',
+											border: '1px solid black',
+											width: '100%',
+										}}
+									>
+										<Typography>{ele.notificationTitle}</Typography>
+										<Typography>{ele.notificationDesc}</Typography>
+										<Typography variant="body2" color="textSecondary">
+											{dayjs(ele.createdAt).fromNow()}
+										</Typography>
+									</div>
+								</Stack>
+							);
+						}
+					})
+				) : (
+					<div
+						style={{
+							width: '309px',
+							height: '149px',
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+						}}
+					>
+						<Typography>No Notifications</Typography>
+					</div>
+				)}
 			</Popover>
 		</div>
 	);

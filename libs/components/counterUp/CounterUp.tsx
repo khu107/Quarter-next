@@ -46,7 +46,7 @@ export default function CounterUp() {
 											start={0}
 											end={loading ? item.end : 0}
 											suffix={item.suffix}
-											duration={5}
+											duration={7}
 										/>
 									</VisibilityObserver>
 								</Typography>
