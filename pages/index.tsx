@@ -39,7 +39,7 @@ const Home: NextPage = () => {
 				<CounterUp />
 				<SellsProperties />
 				<PopularProperties />
-				<Advertisement />
+				{/* <Advertisement /> */}
 				<TopProperties />
 				<TopAgents />
 				<Events />

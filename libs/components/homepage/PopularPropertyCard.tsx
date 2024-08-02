@@ -22,9 +22,9 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 	/** HANDLERS **/
 
 	const pushDetailHandler = async (propertyId: string) => {
-		console.log("id:", propertyId);
-		await router.push({pathname: `/property/detail`, query: {id: propertyId}})
-	   }
+		console.log('id:', propertyId);
+		await router.push({ pathname: `/property/detail`, query: { id: propertyId } });
+	};
 
 	if (device === 'mobile') {
 		return (
@@ -33,7 +33,9 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 					component={'div'}
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
-					onClick={() => {pushDetailHandler(property._id)}}
+					onClick={() => {
+						pushDetailHandler(property._id);
+					}}
 				>
 					{property && property?.propertyRank >= topPropertyRank ? (
 						<div className={'status'}>
@@ -47,9 +49,14 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 					<div className={'price'}>${property.propertyPrice}</div>
 				</Box>
 				<Box component={'div'} className={'info'}>
-					<strong className={'title'}
-					onClick={() => {pushDetailHandler(property._id)}}
-					>{property.propertyTitle}</strong>
+					<strong
+						className={'title'}
+						onClick={() => {
+							pushDetailHandler(property._id);
+						}}
+					>
+						{property.propertyTitle}
+					</strong>
 					<p className={'desc'}>{property.propertyAddress}</p>
 					<div className={'options'}>
 						<div>
@@ -85,7 +92,9 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 					component={'div'}
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
-					onClick={() => {pushDetailHandler(property._id)}}
+					onClick={() => {
+						pushDetailHandler(property._id);
+					}}
 				>
 					{property?.propertyRank && property?.propertyRank >= 50 ? (
 						<div className={'status'}>
@@ -96,12 +105,26 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 						''
 					)}
 
-					<div className={'price'}>${property.propertyPrice}</div>
+					{/* <div className={'price'}>${property.propertyPrice}</div> */}
+					<div className="view-like-box">
+						<IconButton color={'default'}>
+							<RemoveRedEyeIcon />
+						</IconButton>
+						<Typography className="view-cnt">{property?.propertyViews}</Typography>
+					</div>
 				</Box>
 				<Box component={'div'} className={'info'}>
-					<strong className={'title'}
-					 onClick={() => {pushDetailHandler(property._id)}}
-					>{property.propertyTitle}</strong>
+					<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+						<strong
+							className={'title'}
+							onClick={() => {
+								pushDetailHandler(property._id);
+							}}
+						>
+							{property.propertyTitle}
+						</strong>
+						<div className={'price'}>${property.propertyPrice}</div>
+					</div>
 					<p className={'desc'}>{property.propertyAddress}</p>
 					<div className={'options'}>
 						<div>
@@ -120,11 +143,19 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 					<Divider sx={{ mt: '15px', mb: '17px' }} />
 					<div className={'bott'}>
 						<p>{property?.propertyRent ? 'rent' : 'sale'}</p>
-						<div className="view-like-box">
-							<IconButton color={'default'}>
-								<RemoveRedEyeIcon />
-							</IconButton>
-							<Typography className="view-cnt">{property?.propertyViews}</Typography>
+						<div
+							style={{
+								padding: '10px',
+								background: '#f2f4f6',
+								color: 'black',
+								borderRadius: '10px',
+								cursor: 'pointer',
+							}}
+							onClick={() => {
+								pushDetailHandler(property._id);
+							}}
+						>
+							Book Now
 						</div>
 					</div>
 				</Box>
