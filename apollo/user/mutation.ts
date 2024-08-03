@@ -346,3 +346,20 @@ export const MARKNOTIFICATIONREAD = gql`
 		}
 	}
 `;
+/**************************
+ *         MESSGE        *
+ *************************/
+
+export const CREATE_CONTACT = gql`
+	mutation CreateMessage($input: ContactInput!) {
+		createMessage(input: $input) {
+			_id
+			name
+			phone
+			email
+			message
+			contactRefId
+			memberId
+		}
+	}
+`;

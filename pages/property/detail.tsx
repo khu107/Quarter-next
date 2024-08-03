@@ -31,8 +31,8 @@ import { GET_COMMENTS, GET_PROPERTIES, GET_PROPERTY } from '../../apollo/user/qu
 import { T } from '../../libs/types/common';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import { sweetErrorHandling, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
-import { CREATE_COMMENT, LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
-
+import { CREATE_COMMENT, CREATE_CONTACT, LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
+import { ContactInput } from '../../libs/types/contact/contact.input';
 
 SwiperCore.use([Autoplay, Navigation, Pagination]);
 
@@ -59,70 +59,78 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 		commentRefId: '',
 	});
 
+	const [insertContactData, setInsertContactData] = useState<ContactInput>({
+		name: '',
+		phone: '',
+		email: '',
+		message: '',
+		contactRefId: '',
+	});
+
 	/** APOLLO REQUESTS **/
-	
+
 	const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
 	const [createComment] = useMutation(CREATE_COMMENT);
-
+	const [createMessage] = useMutation(CREATE_CONTACT);
 
 	const {
 		loading: getPropertyLoading,
 		data: getPropertyData,
 		error: getPropertyError,
-        refetch: getPropertyRefetch,
-	 } = useQuery(GET_PROPERTY, {
-		fetchPolicy: "network-only",
-		variables:{input: propertyId},
+		refetch: getPropertyRefetch,
+	} = useQuery(GET_PROPERTY, {
+		fetchPolicy: 'network-only',
+		variables: { input: propertyId },
 		skip: !propertyId,
 		notifyOnNetworkStatusChange: true,
-		onCompleted:( data: T) => {
-		  if(data?.getProperty) setProperty(data?.getProperty);
-		  if(data?.getProperty) setSlideImage(data?.getProperty?.propertyImages[0]);
-
+		onCompleted: (data: T) => {
+			if (data?.getProperty) setProperty(data?.getProperty);
+			if (data?.getProperty) setSlideImage(data?.getProperty?.propertyImages[0]);
 		},
-	 });
+	});
 
-	 const {
+	const {
 		loading: getPropertiesLoading,
 		data: getPropertiesData,
 		error: getPropertiesError,
-        refetch: getPropertiesRefetch,
-	 } = useQuery(GET_PROPERTIES, {
+		refetch: getPropertiesRefetch,
+	} = useQuery(GET_PROPERTIES, {
 		fetchPolicy: 'cache-and-network',
-		variables:{
+		variables: {
 			input: {
-               page: 1,
-			   limit: 4,
-			   sort: 'createdAt',
-			   direction: Direction.DESC,
-			   search: {
-				locationList:property?.propertyLocation ? [property?.propertyLocation] : [],
-			   },
+				page: 1,
+				limit: 4,
+				sort: 'createdAt',
+				direction: Direction.DESC,
+				search: {
+					locationList: property?.propertyLocation ? [property?.propertyLocation] : [],
+				},
 			},
-		 },
-		 skip: !propertyId && !property,
-		notifyOnNetworkStatusChange: true,
-		onCompleted:( data: T) => {
-			if(data?.getProperties?.list) setDestinationProperties(data?.getProperties?.list)
 		},
-	 });
+		skip: !propertyId && !property,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if (data?.getProperties?.list) setDestinationProperties(data?.getProperties?.list);
+		},
+	});
 
-	 const {
+	const {
 		loading: getCommentsLoading,
 		data: getCommentsData,
 		error: getCommentsError,
-        refetch: getCommentsRefetch,
-	 } = useQuery(GET_COMMENTS, {
-		fetchPolicy: "cache-and-network",
-		variables:{
-			input: initialComment },
-		 skip: !commentInquiry.search.commentRefId,
-		notifyOnNetworkStatusChange: true,
-		onCompleted:( data: T) => {
-			if(data?.getComments?.list) setPropertyComments(data?.getComments?.list),
-			setCommentTotal(data?.getComments?.metaCounter[0]?.total ?? 0)
+		refetch: getCommentsRefetch,
+	} = useQuery(GET_COMMENTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: {
+			input: initialComment,
 		},
-	 });
+		skip: !commentInquiry.search.commentRefId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if (data?.getComments?.list)
+				setPropertyComments(data?.getComments?.list), setCommentTotal(data?.getComments?.metaCounter[0]?.total ?? 0);
+		},
+	});
 	/** LIFECYCLES **/
 	useEffect(() => {
 		if (router.query.id) {
@@ -137,12 +145,16 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 				...insertCommentData,
 				commentRefId: router.query.id as string,
 			});
+			setInsertContactData({
+				...insertContactData,
+				contactRefId: router.query.id as string, // contactRefId 설정
+			});
 		}
 	}, [router]);
 
 	useEffect(() => {
-		if(commentInquiry.search.commentRefId) {
-			getCommentsRefetch({input: commentInquiry});
+		if (commentInquiry.search.commentRefId) {
+			getCommentsRefetch({ input: commentInquiry });
 		}
 	}, [commentInquiry]);
 
@@ -152,37 +164,33 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 		setSlideImage(image);
 	};
 
-	const likePropertyHandler = async(user: T, id: string) => {
-		try{
-			if(!id) return;
-			if(!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+	const likePropertyHandler = async (user: T, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
 
 			// execute likeTargetProperty Mutation
-			await likeTargetProperty(
-				{variables: {input: id}}
-			);
-		     await getPropertyRefetch({
-				variables: {input: propertyId}
-			 })
+			await likeTargetProperty({ variables: { input: id } });
+			await getPropertyRefetch({
+				variables: { input: propertyId },
+			});
 			await getPropertiesRefetch({
 				input: {
 					page: 1,
 					limit: 4,
-					sort: "propertyViews",
+					sort: 'propertyViews',
 					direction: Direction.DESC,
 					search: {
-					 locationList: [property?.propertyLocation]
+						locationList: [property?.propertyLocation],
 					},
-			},
-		});
-             await sweetTopSmallSuccessAlert("success", 400);
+				},
+			});
+			await sweetTopSmallSuccessAlert('success', 400);
 		} catch (err: any) {
 			console.log('ERROR, likePropertyHandler ', err.message);
 			sweetMixinErrorAlert(err.message).then();
 		}
-	}
-
-
+	};
 
 	const commentPaginationChangeHandler = async (event: ChangeEvent<unknown>, value: number) => {
 		commentInquiry.page = value;
@@ -190,24 +198,50 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 	};
 
 	const createCommentHandler = async () => {
-        try{
-			if(!user._id) throw new Error(Message.NOT_AUTHENTICATED)
-			 await createComment({variables: { input: insertCommentData } });
-            
-			setInsertCommentData({...insertCommentData, commentContent: "" });
+		try {
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+			await createComment({ variables: { input: insertCommentData } });
+
+			setInsertCommentData({ ...insertCommentData, commentContent: '' });
 
 			await getCommentsRefetch({ input: commentInquiry });
-		} catch(err: any) {
-            await sweetErrorHandling(err);
+		} catch (err: any) {
+			await sweetErrorHandling(err);
 		}
 	};
 
-	if(getPropertyLoading) {
-		return(<Stack
-	     sx={{ display: "flex", justifyContent: "center", alignItems:"center", width: '100%', height: "1080px" }} 	
-		>
-			<CircularProgress  />
-		</Stack>)
+	const handleContactChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+		const { name, value } = e.target;
+		setInsertContactData((prevData) => ({
+			...prevData,
+			[name]: value,
+		}));
+	};
+
+	const createMessageHandler = async () => {
+		try {
+			await createMessage({ variables: { input: insertContactData } });
+
+			setInsertContactData({
+				name: '',
+				phone: '',
+				email: '',
+				message: '',
+				contactRefId: router.query.id as string,
+			});
+
+			await sweetTopSmallSuccessAlert('Message sent successfully!', 400);
+		} catch (err: any) {
+			await sweetErrorHandling(err);
+		}
+	};
+
+	if (getPropertyLoading) {
+		return (
+			<Stack sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '1080px' }}>
+				<CircularProgress />
+			</Stack>
+		);
 	}
 
 	if (device === 'mobile') {
@@ -580,22 +614,45 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 								</Stack>
 								<Stack className={'info-box'}>
 									<Typography className={'sub-title'}>Name</Typography>
-									<input type={'text'} placeholder={'Enter your name'} />
+									<input
+										type={'text'}
+										placeholder={'Enter your name'}
+										name="name"
+										value={insertContactData.name}
+										onChange={handleContactChange}
+									/>
 								</Stack>
 								<Stack className={'info-box'}>
 									<Typography className={'sub-title'}>Phone</Typography>
-									<input type={'text'} placeholder={'Enter your phone'} />
+									<input
+										type={'text'}
+										placeholder={'Enter your phone'}
+										name="phone"
+										value={insertContactData.phone}
+										onChange={handleContactChange}
+									/>
 								</Stack>
 								<Stack className={'info-box'}>
 									<Typography className={'sub-title'}>Email</Typography>
-									<input type={'text'} placeholder={'creativelayers088'} />
+									<input
+										type={'text'}
+										placeholder={'creativelayers088'}
+										name="email"
+										value={insertContactData.email}
+										onChange={handleContactChange}
+									/>
 								</Stack>
 								<Stack className={'info-box'}>
 									<Typography className={'sub-title'}>Message</Typography>
-									<textarea placeholder={'Hello, I am interested in \n' + '[Renovated property at  floor]'}></textarea>
+									<textarea
+										name="message"
+										placeholder={'Hello, I am interested in \n' + '[Renovated property at  floor]'}
+										value={insertContactData.message}
+										onChange={handleContactChange}
+									></textarea>
 								</Stack>
 								<Stack className={'info-box'}>
-									<Button className={'send-message'}>
+									<Button className={'send-message'} onClick={createMessageHandler}>
 										<Typography className={'title'}>Send Message</Typography>
 										<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
 											<g clipPath="url(#clip0_6975_593)">
@@ -644,7 +701,11 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 										{destinationProperties.map((property: Property) => {
 											return (
 												<SwiperSlide className={'similar-homes-slide'} key={property.propertyTitle}>
-													<PropertyBigCard property={property} likePropertyHandler={likePropertyHandler} key={property?._id} />
+													<PropertyBigCard
+														property={property}
+														likePropertyHandler={likePropertyHandler}
+														key={property?._id}
+													/>
 												</SwiperSlide>
 											);
 										})}

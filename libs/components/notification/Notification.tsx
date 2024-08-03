@@ -113,12 +113,12 @@ export default function BasicPopover() {
 											padding: '15px',
 											borderRadius: '15px',
 											border: '1px solid black',
-											width: '100%',
+											width: '309px',
 										}}
 									>
-										<Typography>{ele.notificationTitle}</Typography>
+										<Typography sx={{ color: 'blue' }}>{ele.notificationTitle}</Typography>
 										<Typography>{ele.notificationDesc}</Typography>
-										<Typography variant="body2" color="textSecondary">
+										<Typography variant="body2" color="primary">
 											{dayjs(ele.createdAt).fromNow()}
 										</Typography>
 									</div>

@@ -43,9 +43,7 @@ const AgentCard = (props: AgentCardProps) => {
 							backgroundPosition: 'center',
 							backgroundRepeat: 'no-repeat',
 						}}
-					>
-						<div>{agent?.memberProperties} properties</div>
-					</Box>
+					></Box>
 				</Link>
 
 				<Stack className={'agent-desc'}>
@@ -56,23 +54,35 @@ const AgentCard = (props: AgentCardProps) => {
 								query: { agentId: 'id' },
 							}}
 						>
+							<span>Agent</span>
+						</Link>
+						<Link
+							href={{
+								pathname: '/agent/detail',
+								query: { agentId: 'id' },
+							}}
+						>
 							<strong>{agent?.memberFullName ?? agent?.memberNick}</strong>
 						</Link>
-						<span>Agent</span>
 					</Box>
-					<Box component={'div'} className={'buttons'}>
-						<IconButton color={'default'}>
-							<RemoveRedEyeIcon />
-						</IconButton>
-						<Typography className="view-cnt">{agent?.memberViews}</Typography>
-						<IconButton color={'default'} onClick={() => likeMemberHandler(user, agent?._id)}>
-							{agent?.meLiked && agent?.meLiked[0]?.myFavorite ? (
-								<FavoriteIcon color={'primary'} />
-							) : (
-								<FavoriteBorderIcon />
-							)}
-						</IconButton>
-						<Typography className="view-cnt">{agent?.memberLikes}</Typography>
+					<Box>
+						<Box component={'div'} className={'buttons'}>
+							<div>properties: {agent?.memberProperties}</div>
+							<div style={{ display: 'flex', alignItems: 'center' }}>
+								<IconButton color={'default'}>
+									<RemoveRedEyeIcon />
+								</IconButton>
+								<Typography className="view-cnt">{agent?.memberViews}</Typography>
+								<IconButton color={'default'} onClick={() => likeMemberHandler(user, agent?._id)}>
+									{agent?.meLiked && agent?.meLiked[0]?.myFavorite ? (
+										<FavoriteIcon color={'primary'} />
+									) : (
+										<FavoriteBorderIcon />
+									)}
+								</IconButton>
+								<Typography className="view-cnt">{agent?.memberLikes}</Typography>
+							</div>
+						</Box>
 					</Box>
 				</Stack>
 			</Stack>
