@@ -220,6 +220,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 
 	const createMessageHandler = async () => {
 		try {
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
 			await createMessage({ variables: { input: insertContactData } });
 
 			setInsertContactData({
