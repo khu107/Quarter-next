@@ -24,11 +24,12 @@ export default function CounterUp() {
 
 	return (
 		<div style={{ background: '#F6F6F6' }}>
-			<Stack className="container" justifyContent={'center'} height={'430px'} bg={'#F2F6F7'}>
+			<Stack className="container" justifyContent="center" height="430px" sx={{ backgroundColor: '#F2F6F7' }}>
 				<Grid container spacing={4}>
 					{data.map((item, index) => (
 						<Grid item xs={12} sm={6} md={3} key={index} sx={{ textAlign: 'center' }}>
 							<Box
+								component={'div'}
 								sx={{
 									display: 'flex',
 									gap: '15px',

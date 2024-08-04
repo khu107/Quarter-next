@@ -18,9 +18,9 @@ dayjs.locale('ko');
 export default function BasicPopover() {
 	const user = useReactiveVar(userVar);
 	const router = useRouter();
-	const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+	const [anchorEl, setAnchorEl] = React.useState<SVGSVGElement | null>(null);
 	const [notification, setNotification] = React.useState<Notification[]>([]);
-	const handleClick = (event: React.MouseEvent<HTMLButtonElement>, notificationId: string) => {
+	const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
 

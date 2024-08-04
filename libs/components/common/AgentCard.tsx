@@ -65,7 +65,7 @@ const AgentCard = (props: AgentCardProps) => {
 							<strong>{agent?.memberFullName ?? agent?.memberNick}</strong>
 						</Link>
 					</Box>
-					<Box>
+					<Box component={'div'}>
 						<Box component={'div'} className={'buttons'}>
 							<div>properties: {agent?.memberProperties}</div>
 							<div style={{ display: 'flex', alignItems: 'center' }}>
