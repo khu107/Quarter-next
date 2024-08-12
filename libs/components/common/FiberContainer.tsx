@@ -4,6 +4,8 @@ import { Suspense } from 'react';
 import { Preload, Image as ImageImpl } from '@react-three/drei';
 import { ScrollControls, Scroll } from './ScrollControls';
 import * as THREE from 'three';
+import { Button, Stack } from '@mui/material';
+import Imgsrc from 'next/image';
 
 function Image(props: any) {
 	const ref = useRef<THREE.Group>();
@@ -46,17 +48,35 @@ function Pages() {
 
 export default function FiberContainer() {
 	return (
-		<div className="threeJSContainer" style={{ marginTop: '100px', width: '100%', height: '512px' }}>
-			<Canvas gl={{ antialias: false }} dpr={[1, 1.5]}>
-				<Suspense fallback={null}>
-					<ScrollControls infinite horizontal damping={4} pages={4} distance={1}>
-						<Scroll>
-							<Pages />
-						</Scroll>
-					</ScrollControls>
-					<Preload />
-				</Suspense>
-			</Canvas>
-		</div>
+		// <div className="threeJSContainer" style={{ marginTop: '100px', width: '100%', height: '512px' }}>
+		// 	<Canvas gl={{ antialias: false }} dpr={[1, 1.5]}>
+		// 		<Suspense fallback={null}>
+		// 			<ScrollControls infinite horizontal damping={4} pages={4} distance={1}>
+		// 				<Scroll>
+		// 					<Pages />
+		// 				</Scroll>
+		// 			</ScrollControls>
+		// 			<Preload />
+		// 		</Suspense>
+		// 	</Canvas>
+		// </div>
+		<Stack
+			flexDirection={'row'}
+			gap={10}
+			alignItems={'center'}
+			justifyContent={'center'}
+			style={{ marginTop: '100px', border: '1px solid red', height: '100%' }}
+		>
+			<Stack>
+				{/* <img src="/img/dom.png" width={'800px'} alt="dom" /> */}
+				<Imgsrc src={'/img/dom.png'} width={800} height={600} alt="Project Image" layout="responsive" quality={100} />
+			</Stack>
+			<Stack style={{ width: '650px', border: '1px solid red' }}>
+				<div>Real Estate Agency</div>
+				<h1 style={{ fontSize: '65px' }}>The Right Place of House Finding</h1>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
+				<button style={{ width: '300px', padding: '15px' }}>Shop Now</button>
+			</Stack>
+		</Stack>
 	);
 }
