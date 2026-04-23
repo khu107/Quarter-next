@@ -26,7 +26,7 @@ GraphQL을 통한 백엔드 서버와의 매끄러운 통신을 바탕으로 매
 
 ---
 
-## 🛠 기술 스택 (Tech Stack)
+##  기술 스택 (Tech Stack)
 - **Framework:** Next.js (React)
 - **Language:** TypeScript
 - **State Management & Data Fetching:** Apollo Client (GraphQL)
